@@ -21,8 +21,14 @@ public class AppUserSecurityConfig {
         http.authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/register", "/login").permitAll()
                         .anyRequest().authenticated())
-                .formLogin(Customizer.withDefaults());
-
+                .formLogin(form -> form
+                        .loginPage("/login")
+                        .loginProcessingUrl("/login")
+                        .failureUrl("/login?error")
+                        .permitAll())
+                .logout(logout -> logout
+                        .logoutSuccessUrl("/login?logout")
+                        .permitAll());
         return http.build();
     }
 }
